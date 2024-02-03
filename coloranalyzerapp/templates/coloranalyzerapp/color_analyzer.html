@@ -1,0 +1,62 @@
+<!-- coloranalyzerapp/templates/coloranalyzerapp/color_analyzer.html -->
+{% load inttohex %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Analyzer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .color-box {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="mb-4">Color Analyzer</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="imageInput">Upload an Image:</label>
+            <input type="file" name="image" id="imageInput" accept=".png, .jpg, .jpeg, .gif" class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary">Analyze</button>
+    </form>
+
+    {% if dominant_color %}
+        <hr>
+        <h2>Dominant Color:</h2>
+        <div class="color-box" style="background-color: rgb({{ dominant_color.0 }}, {{ dominant_color.1 }}, {{ dominant_color.2 }});"></div>
+        <p class="mt-2">RGB: {{ dominant_color.0 }}, {{ dominant_color.1 }}, {{ dominant_color.2 }}</p>
+        <p>Hex: #{{ dominant_color.0|inttohex }}{{ dominant_color.1|inttohex }}{{ dominant_color.2|inttohex }}</p>
+    {% endif %}
+
+    {% if uploaded_image %}
+        <hr>
+        <h2>Uploaded Image:</h2>
+        <img src="{{ uploaded_image }}" class="img-fluid" alt="Uploaded Image">
+    {% endif %}
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
